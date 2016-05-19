@@ -1,0 +1,33 @@
+version: '2'
+services:
+  plex:
+    restart: always
+    image: "timhaak/plex"
+    container_name: plex
+    ports:
+      - 32400:32400
+    network_mode: host
+    volumes:
+      - ~/media:/data
+
+  transmission:
+    restart: always
+    image: "dperson/transmission"
+    container_name: transmission
+    ports:
+      - 9091:9091
+    volumes:
+      - ~/media:/var/lib/transmission-daemon/downloads
+
+  soanrr:
+    restart: always
+    image: "linuxserver/sonarr"
+    container_name: soanrr
+    ports:
+      - 8989:8989
+    volumes:
+      - ~/media:/volumes/media 
+      - ~/media:/volumes/completed
+    links:
+      - plex
+      - transmission
