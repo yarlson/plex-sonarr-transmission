@@ -9,6 +9,7 @@ services:
     network_mode: host
     volumes:
       - ~/media:/data
+      - plex_config:/config
 
   transmission:
     restart: always
@@ -19,15 +20,21 @@ services:
     volumes:
       - ~/media:/var/lib/transmission-daemon/downloads
 
-  soanrr:
+  sonarr:
     restart: always
     image: "linuxserver/sonarr"
-    container_name: soanrr
+    container_name: sonarr
     ports:
       - 8989:8989
     volumes:
       - ~/media:/volumes/media 
       - ~/media:/volumes/completed
+      - sonarr_config:/config
+      - sonarr_tv:/tv
     links:
-      - plex
       - transmission
+
+volumes:
+  plex_config: {}
+  sonarr_config: {}
+  sonarr_tv: {}
